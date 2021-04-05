@@ -53,7 +53,7 @@
         function withdraw(){
             var action = parseInt(document.getElementById('action').value)
             rate = action * 100 / sum
-            sum = (sum-action) + (rate*(sum - action))/100
+            sum = (sum-action) + (rate*(sum - action))/(100 * 31557600)
             <!-- document.getElementById('sum').innerHTML=sum -->
             supply= sum + action
             <!-- document.getElementById('supply').innerHTML=supply -->
