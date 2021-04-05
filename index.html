@@ -37,6 +37,9 @@
             <br>
             <label for="">Inflation rate:</label>
             <div id="inf"></div>
+            <br>
+            <label for="">diff:</label>
+            <div id="diff"></div>
         </div>
     </center>
     <script>
@@ -64,12 +67,12 @@
         function depo(){
             var action = parseInt(document.getElementById('action').value)
             sum=sum+action
-            <!-- document.getElementById('sum').innerHTML = sum -->
+            document.getElementById('sum').innerHTML = sum
             strD = strD + action + ' , '
             document.getElementById('tranD').innerHTML = strD
         }
 
-        var inf = ''
+        
 
         setInterval(()=>{
             diff =supply-sum
@@ -82,7 +85,9 @@
                 document.getElementById('supply').innerHTML = supply
                 inf=inf + inflation + ' , '
                 document.getElementById('inf').innerHTML=inflation
+                
             }
+            document.getElementById('diff').innerHTML = diff
         },1000)
 
     </script>
