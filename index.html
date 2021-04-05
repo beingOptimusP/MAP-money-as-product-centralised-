@@ -54,9 +54,9 @@
             var action = parseInt(document.getElementById('action').value)
             rate = action * 100 / sum
             sum = (sum-action) + (rate*(sum - action))/100
-            document.getElementById('sum').innerHTML=sum
+            <!-- document.getElementById('sum').innerHTML=sum -->
             supply= sum + action
-            document.getElementById('supply').innerHTML=supply
+            <!-- document.getElementById('supply').innerHTML=supply -->
             strW=strW + action+' , '
             document.getElementById('tranW').innerHTML=strW
         }
@@ -64,7 +64,8 @@
         function depo(){
             var action = parseInt(document.getElementById('action').value)
             sum=sum+action
-            document.getElementById('sum').innerHTML = sum
+            supply=supply+action
+            <!-- document.getElementById('sum').innerHTML = sum -->
             strD = strD + action + ' , '
             document.getElementById('tranD').innerHTML = strD
         }
@@ -79,6 +80,7 @@
                 sum = sum + ((inflation*sum)/(100*31557600))
                 supply=sum+diff
                 document.getElementById('sum').innerHTML = sum
+                document.getElementById('supply').innerHTML = supply
                 inf=inf + inflation + ' , '
                 document.getElementById('inf').innerHTML=inflation
             }
