@@ -69,6 +69,8 @@
             document.getElementById('tranD').innerHTML = strD
         }
 
+        var inf = ''
+
         setInterval(()=>{
             diff =supply-sum
             if(diff>0)
@@ -77,7 +79,8 @@
                 sum = sum + ((inflation*sum)/(100*31557600))
                 supply=sum+diff
                 document.getElementById('sum').innerHTML = sum
-                document.getElementById('supply').innerHTML = supply
+                inf=inf + inflation + ' , '
+                document.getElementById('inf').innerHTML=inflation
             }
         },1000)
 
