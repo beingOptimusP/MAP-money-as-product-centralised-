@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<center>
+    <h2>{{error}}</h2>
+    <h2>welcome {{user.username}}</h2>
+    <h3>Holdings : {{user.profile.Holdings}}</h3>
+    <h3>Walet : {{user.profile.wallet}}</h3>
+    <h3>Interest(per year) : {{user.profile.interest}}</h3>
+    <br><br>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        Choose value : <input name="num" type="number"><br>
+        Withdraw : <input value="withdraw" name="option" type="radio"><br>
+        Deposit : <input value="deposit" name="option" type="radio"><br>
+        <!-- <button class="btn btn-danger" type="submit" >Withdraw</button> -->
+        <button class="btn btn-success" type="submit" >Submit</button>
+    </form>
+</center>
+
+{% endblock  %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<br><br>
+    <center>
+        <div>
+            <h1>Bank Details</h1><br><br>
+            <h3>Total supply : {{bank.total_supply}}</h3>
+            <h3>Money inside Bank : {{bank.in_bank}}</h3>
+            <h3>Inflation rate : {{bank.inflation}}%</h3>
+        </div>
+    </center>
+{% endblock  %}
