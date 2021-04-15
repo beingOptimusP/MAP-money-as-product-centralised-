@@ -36,8 +36,12 @@ def dashboard(request):
     bank=get_object_or_404(Bank,pk=1)
     user = User.objects.get(username=request.user.username)
 
-    user.profile.interest = bank.inflation
-    user.save()
+    if user.profile.Holdings != 0:
+        user.profile.interest = bank.inflation
+        user.save()
+    else:
+        user.profile.interest = 0
+        user.save()
 
     if request.method == 'POST':
         if request.POST['option'] == 'withdraw':
