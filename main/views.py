@@ -72,7 +72,7 @@ def dashboard(request):
                 bank.save()
                 user.save()
                 return render(request, 'dashboard.html',{'user':user,'msg':'successful transaction'})
-        else:
+        if 'withdraw' in request.POST:
             num = float(request.POST['num'])
             if num > user.profile.Holdings:
                 return render(request, 'dashboard.html',{'user':user,'error':'u are withdrawing more than ur holdings'})
