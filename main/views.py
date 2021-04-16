@@ -5,10 +5,24 @@ from django.db import IntegrityError
 from django.contrib.auth import login,logout,authenticate
 from .models import Bank,Profile,Transaction
 from .forms import TransactionForm
+import threading
+
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
+
 
 # Create your views here.
 def home(request):
     bank=get_object_or_404(Bank,pk=1)
+    bank.in_bank += (bank.inflation*bank.in_bank)/(100*525600*10)
+    bank.total_supply = bank.in_bank + bank.inflation*bank.total_supply/100
+    bank.inflation = (bank.total_supply - bank.in_bank)*100/bank.total_supply
+    bank.save()
     context={
         'bank':bank
     }
@@ -43,20 +57,19 @@ def dashboard(request):
         user.profile.interest = 0
         user.save()
 
+
+    users = User.objects.all()
+    for i in users:
+        if i.profile.Holdings > 0:
+            i.profile.Holdings += (bank.inflation*user.profile.Holdings)/(100*525600*10)
+            i.save()
+
+
     tran1 = Transaction.objects.filter(user=request.user)
     tran2 = Transaction.objects.filter(to=request.user)
     trans = tran1.union(tran2)
 
     if request.method == 'POST':
-        # if request.POST['option'] == 'withdraw':
-        #     num = float(request.POST['num'])
-        #     bank.in_bank=bank.in_bank-num
-        #     user.profile.wallet=user.profile.wallet+num
-        #     diff = bank.total_supply - bank.in_bank
-        #     bank.inflation = (diff/bank.total_supply)*100
-        #     bank.save()
-        #     user.save()
-        #     return redirect('dash')
         
         if 'deposit' in request.POST:
             num = float(request.POST['num'])
