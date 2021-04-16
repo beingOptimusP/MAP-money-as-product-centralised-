@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login,logout,authenticate
-from .models import Bank,Profile
-
+from .models import Bank,Profile,Transaction
+from .forms import TransactionForm
 
 # Create your views here.
 def home(request):
@@ -43,17 +43,22 @@ def dashboard(request):
         user.profile.interest = 0
         user.save()
 
+    tran1 = Transaction.objects.filter(user=request.user)
+    tran2 = Transaction.objects.filter(to=request.user)
+    trans = tran1.union(tran2)
+
     if request.method == 'POST':
-        if request.POST['option'] == 'withdraw':
-            num = float(request.POST['num'])
-            bank.in_bank=bank.in_bank-num
-            user.profile.wallet=user.profile.wallet+num
-            diff = bank.total_supply - bank.in_bank
-            bank.inflation = (diff/bank.total_supply)*100
-            bank.save()
-            user.save()
-            return redirect('dash')
-        else:
+        # if request.POST['option'] == 'withdraw':
+        #     num = float(request.POST['num'])
+        #     bank.in_bank=bank.in_bank-num
+        #     user.profile.wallet=user.profile.wallet+num
+        #     diff = bank.total_supply - bank.in_bank
+        #     bank.inflation = (diff/bank.total_supply)*100
+        #     bank.save()
+        #     user.save()
+        #     return redirect('dash')
+        
+        if 'deposit' in request.POST:
             num = float(request.POST['num'])
             if num > user.profile.wallet:
                 return render(request, 'dashboard.html',{'user':user,'error':'u are depositing more than ur wallet has'})
@@ -66,9 +71,20 @@ def dashboard(request):
                 bank.inflation = (diff/bank.total_supply)*100
                 bank.save()
                 user.save()
-                return redirect('dash')
+                return render(request, 'dashboard.html',{'user':user,'msg':'successful transaction'})
+        else:
+            num = float(request.POST['num'])
+            if num > user.profile.Holdings:
+                return render(request, 'dashboard.html',{'user':user,'error':'u are withdrawing more than ur holdings'})
+            else:
+                user.profile.Holdings -= num
+                user.profile.wallet +=num
+                user.save()
+                return render(request, 'dashboard.html',{'user':user,'msg':'successful transaction'})
 
-    return render(request, 'dashboard.html',{'user':user})
+        
+
+    return render(request, 'dashboard.html',{'user':user,'tran':trans})
 
 
 def logoutuser(request):
@@ -86,3 +102,43 @@ def loginuser(request):
         else:
             login(request,user)
             return redirect('dash')
+
+
+
+def transact(request):
+    if request.method == 'GET':
+        return render(request,'transact.html',{'form':TransactionForm()})
+    else:
+        form = TransactionForm(request.POST)
+        tran = form.save(commit=False)
+        tran.user = request.user
+        
+
+        user1 = User.objects.get(username=tran.user)
+        
+
+        user=User.objects.all()
+        for i in user:
+            if tran.to == i.username:
+                break
+        else:
+            return render(request,'transact.html',{'form':TransactionForm(),'error':'username does not exist'})
+
+
+        user2 = User.objects.get(username=tran.to)
+
+        if user1.profile.wallet < tran.amount :
+            return render(request,'transact.html',{'form':TransactionForm(),'error':'u cannot send more than the amount ur wallet has'})
+        elif user1.profile.wallet == user2.profile.wallet:
+            return render(request,'transact.html',{'form':TransactionForm(),'error':'u cannot send money to urself'})
+        else:
+            user1.profile.wallet -= tran.amount 
+            user2.profile.wallet += tran.amount
+            user1.save()
+            user2.save()
+            tran.save()
+            return render(request,'transact.html',{'form':TransactionForm(),'msg':'transaction was successful'})
+
+        
+
+        

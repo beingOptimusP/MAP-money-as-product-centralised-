@@ -43,6 +43,9 @@
         <a class="nav-link" href="{% url 'dash' %}">DashBoard</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'tran' %}">Transact</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link disabled" href="#">logged in as {{user.username}}
 </a>
       </li>
@@ -66,9 +69,10 @@
 </nav>
   
   
-
+    <br>
     {% block content %}
     {% endblock %}
+    <br>
 
 <section class="">
   <!-- Footer -->

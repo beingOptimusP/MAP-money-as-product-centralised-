@@ -1,23 +1,60 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 <br><br>
-<center style="height:500px">
+<center style="height:1000px">
     <h2 style="color:red">{{error}}</h2>
+    <h2 style="color:green">{{msg}}</h2>
     <h2>welcome {{user.username}}</h2>
     <h3>Holdings : {{user.profile.Holdings}}</h3>
-    <h3>Walet : {{user.profile.wallet}}</h3>
+    <h3>Wallet : {{user.profile.wallet}}</h3>
     <h3>Interest(per year) : {{user.profile.interest}}</h3>
     <br><br>
 
     <form action="" method="POST">
         {% csrf_token %}
         Choose value : <input name="num" type="number"><br>
-        Withdraw : <input value="withdraw" name="option" type="radio"><br>
-        Deposit : <input value="deposit" name="option" type="radio"><br>
+        {% comment %} Withdraw : <input value="withdraw" name="option" type="radio"><br>
+        Deposit : <input value="deposit" name="option" type="radio"><br> {% endcomment %}
         <!-- <button class="btn btn-danger" type="submit" >Withdraw</button> -->
-        <button class="btn btn-success" type="submit" >Submit</button>
+        <br>
+        <button class="btn btn-success" value="deposit" type="submit" >Deposit</button>
+        <button class="btn btn-danger" value="withdraw" type="submit" >Withdraw</button>
     </form>
+
+    <br><br>
+    <div>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+        </form>
+    </div>
+
+    
+    <h2>Transactions</h2>
+    <br>
+    <table style="width: 600px;" class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in tran reversed %}
+            <tr>
+                <th scope="row"=>{{i.user}}</th>
+                <td>{{i.to}}</td>
+                <td>{{i.amount}}</td>
+                <td>{{i.time}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </center>
 
+<br><br>
 {% endblock  %}

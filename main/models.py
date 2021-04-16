@@ -29,3 +29,14 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class Transaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    to = models.CharField(max_length=50)
+    time = models.DateTimeField(auto_now_add=True)
+    amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user)
+    
