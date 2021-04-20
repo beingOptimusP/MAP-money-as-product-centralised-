@@ -4,14 +4,14 @@
 
 
 
-    <div style="height:100vh;background:aqua">
+    <div style="height:400px;overflow: hidden;">
         <br><br>
         <center><h2>Log In</h2></center>
         <br>
-        <form style="margin-left: 300px;" action="" method="POST">
+        <form style="margin-left: 450px;" action="" method="POST">
             {% csrf_token %}
             <br>
-            <h3 style="background-color: brown; width:800px; height:40px; border-radius:5px;" >{{error}}</h3>
+            <h3 style="color: brown; width:800px; height:40px; border-radius:5px;" >{{error}}</h3>
             {{form.as_p}}
             <button style="margin-left: 100px;" type="submit" class="btn btn-success" >Log In</button>
         </form>

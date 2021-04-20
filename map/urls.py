@@ -24,4 +24,5 @@ urlpatterns = [
     path('/dashboard', views.dashboard, name='dash'),
     path('/logout', views.logoutuser, name='logout'),
     path('/login',views.loginuser,name='login'),
+    path('/transactions',views.transact,name='tran'),
 ]

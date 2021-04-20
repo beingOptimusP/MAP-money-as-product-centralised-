@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center style="height: 400px;">
+    <br>
+    <h3>Transact</h3>
+    <br>
+    <h3 style="color: red;">{{error}}</h3>
+    <h3 style="color: green;">{{msg}}</h3>
+    <div>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-success" type="submit" >Send</button>
+            
+        </form>
+    </div>
+</center>
+
+{% endblock  %}
